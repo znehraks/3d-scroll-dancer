@@ -1,6 +1,6 @@
 import { useAnimations, useGLTF, useScroll } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import * as THREE from "three";
 import { IsEnteredAtom } from "../stores";
@@ -31,6 +31,12 @@ export const Dancer = () => {
   useFrame(() => {
     if (!isEntered) return;
     timeline.seek(scroll.offset * timeline.duration());
+    console.log("scroll.offset", scroll.offset);
+    console.log("timeline.duration()", timeline.duration());
+    console.log(
+      "scroll.offset * timeline.duration()",
+      scroll.offset * timeline.duration()
+    );
   });
 
   useEffect(() => {
@@ -75,10 +81,21 @@ export const Dancer = () => {
       }
     );
 
-    timeline.to(dancerRef.current.rotation, {
-      y: Math.PI * 2,
-    });
-  }, [isEntered, three.camera, three.camera.position]);
+    timeline.from(
+      dancerRef.current.rotation,
+      {
+        duration: 1,
+        y: Math.PI,
+      },
+      0
+    );
+  }, [
+    isEntered,
+    three.camera,
+    three.camera.position,
+    three.scene,
+    three.scene.background,
+  ]);
 
   if (isEntered)
     return <primitive ref={dancerRef} object={scene} scale={0.05} />;
