@@ -27,7 +27,7 @@ export const MainCanvas = () => {
       scene={{ background: new Color(0x000000) }}
     >
       <ambientLight intensity={5} />
-      <spotLight intensity={2} />
+      <spotLight castShadow receiveShadow intensity={15} />
       <ScrollControls pages={isEntered ? 5 : 0} damping={0.25}>
         <Suspense fallback={<Loader />}>
           <SrcollBackArticles />
