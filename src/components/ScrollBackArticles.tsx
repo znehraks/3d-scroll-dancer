@@ -1,39 +1,74 @@
 import { Scroll, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useState } from "react";
+import { useRef } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { IsEnteredAtom } from "../stores";
 
 export const SrcollBackArticles = () => {
+  const isEntered = useRecoilValue(IsEnteredAtom);
   const scroll = useScroll();
-  const [opacityFirst, setOpacityFirst] = useState(0);
-  const [opacitySecond, setOpacitySecond] = useState(0);
-  const [opacityThird, setOpacityThird] = useState(0);
-  const [opacityForuth, setOpacityForuth] = useState(0);
-  const [opacityFifth, setOpacityFifth] = useState(0);
+  const article01Ref = useRef<HTMLDivElement>(null);
+  const article02Ref = useRef<HTMLDivElement>(null);
+  const article03Ref = useRef<HTMLDivElement>(null);
+  const article04Ref = useRef<HTMLDivElement>(null);
+  const article05Ref = useRef<HTMLDivElement>(null);
 
   useFrame(() => {
-    setOpacityFirst(1 - scroll.range(0, 1 / 5));
-    setOpacitySecond(scroll.curve(1 / 5, 1 / 5));
-    setOpacityThird(scroll.curve(2 / 5, 1 / 5));
-    setOpacityForuth(scroll.curve(3 / 5, 1 / 5));
-    setOpacityFifth(scroll.range(4 / 5, 1 / 5));
+    if (
+      !isEntered ||
+      !article01Ref.current ||
+      !article02Ref.current ||
+      !article03Ref.current ||
+      !article04Ref.current ||
+      !article05Ref.current
+    )
+      return;
+    // setOpacity1(scroll.range(0, 1 / 5));
+    // setOpacity2(scroll.curve(1 / 5, 1 / 5));
+    // setOpacity3(scroll.curve(2 / 5, 1 / 5));
+    // setOpacity4(scroll.curve(3 / 5, 1 / 5));
+    // setOpacity5(scroll.range(4 / 5, 1 / 5));
+    article01Ref.current.style.opacity = `${1 - scroll.range(0, 1 / 5)}`;
+    article02Ref.current.style.opacity = `${scroll.curve(1 / 5, 1 / 5)}`;
+    article03Ref.current.style.opacity = `${scroll.curve(2 / 5, 1 / 5)}`;
+    article04Ref.current.style.opacity = `${scroll.curve(3 / 5, 1 / 5)}`;
+    article05Ref.current.style.opacity = `${scroll.range(4 / 5, 1 / 5)}`;
   });
 
   return (
     <Scroll html>
-      <ArticleWrapper opacity={opacityFirst}>크크 크크1</ArticleWrapper>
-      <ArticleWrapper opacity={opacitySecond}>크크 크크2</ArticleWrapper>
-      <ArticleWrapper opacity={opacityThird}>크크 크크3</ArticleWrapper>
-      <ArticleWrapper opacity={opacityForuth}>크크 크크4</ArticleWrapper>
-      <ArticleWrapper opacity={opacityFifth}>크크 크크5</ArticleWrapper>
+      <ArticleWrapper className="left" ref={article01Ref}>
+        크크 크크1
+      </ArticleWrapper>
+      <ArticleWrapper className="right" ref={article02Ref}>
+        크크 크크2
+      </ArticleWrapper>
+      <ArticleWrapper className="left" ref={article03Ref}>
+        크크 크크3
+      </ArticleWrapper>
+      <ArticleWrapper className="right" ref={article04Ref}>
+        크크 크크4
+      </ArticleWrapper>
+      <ArticleWrapper ref={article05Ref}>크크 크크5</ArticleWrapper>
     </Scroll>
   );
 };
 
-const ArticleWrapper = styled.div<{ opacity: number }>`
+const ArticleWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100vw;
   height: 100vh;
   background-color: transparent;
-  color: #000000;
-  opacity: ${(props) => props.opacity};
+  color: #ffffff;
+  opacity: 0;
+  font-size: 24px;
+  &.left {
+    justify-content: flex-start;
+  }
+  &.right {
+    justify-content: flex-end;
+  }
 `;

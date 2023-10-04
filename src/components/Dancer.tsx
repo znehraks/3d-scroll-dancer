@@ -210,10 +210,11 @@ export const Dancer = () => {
     const count = 1000;
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3).fill(199);
-    const sizes = new Float32Array(count * 3).fill(0.5);
+    const sizes = new Float32Array(count * 3);
 
     for (let i = 0; i < count * 3; i++) {
       positions[i] = (Math.random() - 0.5) * 25;
+      sizes[i] = Math.random();
       // colors[i] = Math.random();
     }
 
@@ -232,6 +233,7 @@ export const Dancer = () => {
         >
           <meshStandardMaterial color={"#DC4F00"} />
         </Plane> */}
+        {/* 셰이더 조작해서 반짝이도록 하는 효과 추가 */}
         <Points positions={positions} colors={colors} sizes={sizes}>
           <pointsMaterial
             vertexColors
