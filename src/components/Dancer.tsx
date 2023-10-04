@@ -1,5 +1,6 @@
 import {
-  Plane,
+  Box,
+  Circle,
   Points,
   useAnimations,
   useGLTF,
@@ -38,13 +39,18 @@ export const Dancer = () => {
   const { scene, animations } = useGLTF("/models/dancer.glb");
   const texture = useTexture("/textures/5.png");
   const dancerRef = useRef<THREE.Mesh>(null);
+  const boxRef = useRef<THREE.Mesh>(null);
+  const rectAreaLightRef = useRef<THREE.RectAreaLight>(null);
   const { actions } = useAnimations(animations, dancerRef);
   console.log(actions);
 
   useFrame(() => {
     if (!isEntered) return;
+    if (!boxRef.current) return;
     timeline.seek(scroll.offset * timeline.duration());
     three.scene.background = new THREE.Color(params.sceneColor);
+    (boxRef.current.material as THREE.MeshStandardMaterial).color =
+      new THREE.Color(params.sceneColor);
 
     // if (scroll.offset * timeline.duration() >= 10) {
     if (rotateFinished) {
@@ -118,6 +124,8 @@ export const Dancer = () => {
         z: 0,
       }
     );
+
+    // scene에 그대로 색 변경할 경우
     gsap.fromTo(
       params,
       { sceneColor: "#0C0400" },
@@ -140,7 +148,7 @@ export const Dancer = () => {
       .from(
         dancerRef.current.rotation,
         {
-          duration: 1,
+          duration: 2,
           y: Math.PI,
         },
         0.5
@@ -148,7 +156,7 @@ export const Dancer = () => {
       .from(
         dancerRef.current.position,
         {
-          duration: 1,
+          duration: 2,
           x: 3,
         },
         "<"
@@ -196,7 +204,6 @@ export const Dancer = () => {
           duration: 15,
           sceneColor: "#DC4F00",
         },
-
         "<"
       );
 
@@ -206,46 +213,62 @@ export const Dancer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEntered]);
 
-  const { positions, colors, sizes } = useMemo(() => {
-    const count = 1000;
+  const { positions } = useMemo(() => {
+    const count = 500;
     const positions = new Float32Array(count * 3);
-    const colors = new Float32Array(count * 3).fill(199);
-    const sizes = new Float32Array(count * 3);
 
     for (let i = 0; i < count * 3; i++) {
       positions[i] = (Math.random() - 0.5) * 25;
-      sizes[i] = Math.random();
       // colors[i] = Math.random();
     }
-
-    return { positions, colors, sizes };
+    return { positions };
   }, []);
 
   if (isEntered)
     return (
       <>
-        {/* <Plane
+        <ambientLight intensity={2} />
+        <rectAreaLight
+          ref={rectAreaLightRef}
+          position={[0, 10, 0]}
           castShadow
           receiveShadow
-          args={[100, 100]}
-          rotation-x={-Math.PI / 2}
-          position-y={-4.4}
-        >
-          <meshStandardMaterial color={"#DC4F00"} />
-        </Plane> */}
-        {/* 셰이더 조작해서 반짝이도록 하는 효과 추가 */}
-        <Points positions={positions} colors={colors} sizes={sizes}>
-          <pointsMaterial
-            vertexColors
-            sizeAttenuation
-            depthWrite
-            depthTest={false}
-            alphaMap={texture}
-            transparent
-            alphaTest={0.001}
-          />
-        </Points>
-        <primitive ref={dancerRef} object={scene} scale={0.05} />
+          intensity={30}
+        />
+
+        <pointLight
+          position={[0, 5, 0]}
+          intensity={30}
+          castShadow
+          receiveShadow
+        />
+
+        <Box ref={boxRef} position={[0, 0, 0]} args={[50, 50, 50]}>
+          <meshStandardMaterial color={"#DC4F00"} side={THREE.DoubleSide} />
+          <Circle
+            castShadow
+            receiveShadow
+            args={[8, 32, 32]}
+            rotation-x={-Math.PI / 2}
+            position-y={-4.4}
+          >
+            <meshStandardMaterial color={"#DC4F00"} side={THREE.DoubleSide} />
+          </Circle>
+          {/* 셰이더 조작해서 반짝이도록 하는 효과 추가 */}
+          <Points positions={positions}>
+            <pointsMaterial
+              size={0.5}
+              color={new THREE.Color("#DC4F00")}
+              sizeAttenuation
+              depthWrite
+              depthTest={false}
+              alphaMap={texture}
+              transparent
+              alphaTest={0.001}
+            />
+          </Points>
+          <primitive ref={dancerRef} object={scene} scale={0.05} />
+        </Box>
       </>
     );
   return <Loader />;
