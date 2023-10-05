@@ -13,9 +13,9 @@ export const SrcollBackArticles = () => {
   const article02Ref = useRef<HTMLDivElement>(null);
   const article03Ref = useRef<HTMLDivElement>(null);
   const article04Ref = useRef<HTMLDivElement>(null);
-  const article05Ref = useRef<HTMLDivElement>(null);
-  const article06Ref = useRef<HTMLDivElement>(null);
-  const article07Ref = useRef<HTMLDivElement>(null);
+  // const article05Ref = useRef<HTMLDivElement>(null);
+  // const article06Ref = useRef<HTMLDivElement>(null);
+  // const article07Ref = useRef<HTMLDivElement>(null);
   const article08Ref = useRef<HTMLDivElement>(null);
 
   useFrame(() => {
@@ -26,24 +26,17 @@ export const SrcollBackArticles = () => {
       !article02Ref.current ||
       !article03Ref.current ||
       !article04Ref.current ||
-      !article05Ref.current ||
-      !article06Ref.current ||
-      !article07Ref.current ||
+      // !article05Ref.current ||
+      // !article06Ref.current ||
+      // !article07Ref.current ||
       !article08Ref.current
     )
       return;
 
-    // setOpacity1(scroll.range(0, 1 / 5));
-    // setOpacity2(scroll.curve(1 / 5, 1 / 5));
-    // setOpacity3(scroll.curve(2 / 5, 1 / 5));
-    // setOpacity4(scroll.curve(3 / 5, 1 / 5));
-    // setOpacity5(scroll.range(4 / 5, 1 / 5));
     article01Ref.current.style.opacity = `${1 - scroll.range(0, 1 / 8)}`;
     article02Ref.current.style.opacity = `${1 - scroll.range(1 / 8, 1 / 8)}`;
     article03Ref.current.style.opacity = `${scroll.curve(2 / 8, 1 / 8)}`;
     article04Ref.current.style.opacity = `${scroll.curve(3 / 8, 1 / 8)}`;
-    article05Ref.current.style.opacity = `${scroll.curve(4 / 8, 1 / 8)}`;
-
     if (scroll.visible(4 / 8, 3 / 8)) {
       fixed.style.display = "flex";
       fixed.style.opacity = `${scroll.curve(4 / 8, 3 / 8)}`;
@@ -73,8 +66,10 @@ export const SrcollBackArticles = () => {
           <span>FastCampus iNteRacTive Web Lecture</span>
         </RightBox>
       </ArticleWrapper>
-      <ArticleWrapper ref={article03Ref}>Over the Head</ArticleWrapper>
-      <ArticleWrapper ref={article04Ref}>
+      <ArticleWrapper ref={article03Ref}>
+        Threejs R3F Drei Cannon
+      </ArticleWrapper>
+      <ArticleWrapper className="height-4" ref={article04Ref}>
         <RightBox className="fixed">
           <span>FastCampus InteracTive Web Lecture</span>
           <span>FastCampus iNteracTive Web Lecture</span>
@@ -84,10 +79,12 @@ export const SrcollBackArticles = () => {
           4번
         </RightBox>
       </ArticleWrapper>
-      <ArticleWrapper ref={article05Ref}>크크 크크5</ArticleWrapper>
+      {/* <ArticleWrapper ref={article05Ref}>크크 크크5</ArticleWrapper>
       <ArticleWrapper ref={article06Ref}>크크 크크6</ArticleWrapper>
-      <ArticleWrapper ref={article07Ref}>크크 크크7</ArticleWrapper>
-      <ArticleWrapper ref={article08Ref}>크크 크크8</ArticleWrapper>
+      <ArticleWrapper ref={article07Ref}>크크 크크7</ArticleWrapper> */}
+      <ArticleWrapper ref={article08Ref}>
+        You've mastered the basics of R3F.
+      </ArticleWrapper>
     </Scroll>
   );
 };
@@ -100,6 +97,9 @@ const ArticleWrapper = styled.div`
   opacity: 0;
   width: 100vw;
   height: 100vh;
+  &.height-4 {
+    height: 400vh;
+  }
 
   background-color: transparent;
   color: #ffffff;
