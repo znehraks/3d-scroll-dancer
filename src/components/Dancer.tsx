@@ -2,6 +2,7 @@ import {
   Box,
   Circle,
   Points,
+  PositionalAudio,
   useAnimations,
   useGLTF,
   useScroll,
@@ -41,6 +42,7 @@ export const Dancer = () => {
   const dancerRef = useRef<THREE.Mesh>(null);
   const boxRef = useRef<THREE.Mesh>(null);
   const rectAreaLightRef = useRef<THREE.RectAreaLight>(null);
+  const hemisphereLightRef = useRef<THREE.HemisphereLight>(null);
   const { actions } = useAnimations(animations, dancerRef);
   console.log(actions);
 
@@ -148,7 +150,7 @@ export const Dancer = () => {
       .from(
         dancerRef.current.rotation,
         {
-          duration: 2,
+          duration: 4,
           y: Math.PI,
         },
         0.5
@@ -156,7 +158,7 @@ export const Dancer = () => {
       .from(
         dancerRef.current.position,
         {
-          duration: 2,
+          duration: 4,
           x: 3,
         },
         "<"
@@ -164,7 +166,7 @@ export const Dancer = () => {
       .to(
         three.camera.position,
         {
-          duration: 5,
+          duration: 10,
           x: 2,
           z: 8,
         },
@@ -173,25 +175,47 @@ export const Dancer = () => {
       .to(
         params,
         {
-          duration: 5,
+          duration: 10,
           sceneColor: "#0C0400",
-          onUpdate: () => {
-            setRotateFinished(false);
-          },
         },
 
         "<"
       )
+      .to(pivot.rotation, {
+        duration: 10,
+        y: Math.PI,
+      })
+      .to(
+        three.camera.position,
+        {
+          duration: 10,
+          x: -4,
+          z: 12,
+        },
+        "<"
+      )
       .to(three.camera.position, {
-        duration: 5,
+        duration: 10,
+        x: 0,
+        z: 6,
+      })
+      .to(three.camera.position, {
+        duration: 10,
         x: 0,
         z: 16,
+        onUpdate: () => {
+          setRotateFinished(false);
+        },
+      })
+      .to(hemisphereLightRef.current, {
+        duration: 5,
+        intensity: 30,
       })
       .to(
         pivot.rotation,
         {
-          duration: 5,
-          y: Math.PI * 2,
+          duration: 15,
+          y: Math.PI * 4,
           onUpdate: () => {
             setRotateFinished(true);
           },
@@ -219,7 +243,6 @@ export const Dancer = () => {
 
     for (let i = 0; i < count * 3; i++) {
       positions[i] = (Math.random() - 0.5) * 25;
-      // colors[i] = Math.random();
     }
     return { positions };
   }, []);
@@ -227,48 +250,60 @@ export const Dancer = () => {
   if (isEntered)
     return (
       <>
+        <primitive ref={dancerRef} object={scene} scale={0.05} />
         <ambientLight intensity={2} />
         <rectAreaLight
           ref={rectAreaLightRef}
           position={[0, 10, 0]}
-          castShadow
-          receiveShadow
           intensity={30}
         />
-
         <pointLight
           position={[0, 5, 0]}
           intensity={30}
           castShadow
           receiveShadow
         />
+        <hemisphereLight
+          ref={hemisphereLightRef}
+          position={[0, 5, 0]}
+          intensity={0}
+          groundColor={"lime"}
+          color={"blue"}
+        />
 
         <Box ref={boxRef} position={[0, 0, 0]} args={[50, 50, 50]}>
           <meshStandardMaterial color={"#DC4F00"} side={THREE.DoubleSide} />
-          <Circle
-            castShadow
-            receiveShadow
-            args={[8, 32, 32]}
-            rotation-x={-Math.PI / 2}
-            position-y={-4.4}
-          >
-            <meshStandardMaterial color={"#DC4F00"} side={THREE.DoubleSide} />
-          </Circle>
-          {/* 셰이더 조작해서 반짝이도록 하는 효과 추가 */}
-          <Points positions={positions}>
-            <pointsMaterial
-              size={0.5}
-              color={new THREE.Color("#DC4F00")}
-              sizeAttenuation
-              depthWrite
-              depthTest={false}
-              alphaMap={texture}
-              transparent
-              alphaTest={0.001}
-            />
-          </Points>
-          <primitive ref={dancerRef} object={scene} scale={0.05} />
         </Box>
+
+        <Circle
+          castShadow
+          receiveShadow
+          args={[8, 32, 32]}
+          rotation-x={-Math.PI / 2}
+          position-y={-4.4}
+        >
+          <meshStandardMaterial color={"#DC4F00"} side={THREE.DoubleSide} />
+        </Circle>
+        {/* 셰이더 조작해서 반짝이도록 하는 효과 추가 */}
+        <Points positions={positions}>
+          <pointsMaterial
+            size={0.5}
+            color={new THREE.Color("#DC4F00")}
+            sizeAttenuation
+            depthWrite
+            depthTest={false}
+            alphaMap={texture}
+            transparent
+            alphaTest={0.001}
+          />
+        </Points>
+        <PositionalAudio
+          position={[-24, 0, 0]}
+          autoplay
+          url="/audio/bgm.mp3"
+          distance={50}
+          loop
+        />
       </>
     );
   return <Loader />;

@@ -10,6 +10,6 @@ export const Audio = () => {
       ref.current?.play();
     }
   }, [isEntered]);
-  return null;
+  // return null;
   return <audio ref={ref} src="/audio/bgm.mp3" loop={isEntered} />;
 };
