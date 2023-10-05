@@ -2,6 +2,7 @@ import {
   Box,
   Circle,
   Points,
+  PositionalAudio,
   useAnimations,
   useGLTF,
   useScroll,
@@ -296,6 +297,13 @@ export const Dancer = () => {
               alphaTest={0.001}
             />
           </Points>
+          <PositionalAudio
+            position={[-24, 0, 0]}
+            autoplay
+            url="/audio/bgm.mp3"
+            distance={50}
+            loop
+          />
           <primitive ref={dancerRef} object={scene} scale={0.05} />
         </Box>
       </>

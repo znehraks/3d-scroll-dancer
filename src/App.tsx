@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { MainCanvas } from "./components/MainCanvas";
 import { RecoilRoot } from "recoil";
-import { Audio } from "./components/Audio";
 import { FixedDOM } from "./components/FixedDOM";
 
 function App() {
@@ -9,7 +8,6 @@ function App() {
   return (
     <RecoilRoot>
       <Wrapper id="wrapper">
-        <Audio />
         <MainCanvas />
         <FixedDOM />
       </Wrapper>
