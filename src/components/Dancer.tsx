@@ -41,6 +41,7 @@ export const Dancer = () => {
   const dancerRef = useRef<THREE.Mesh>(null);
   const boxRef = useRef<THREE.Mesh>(null);
   const rectAreaLightRef = useRef<THREE.RectAreaLight>(null);
+  const hemisphereLightRef = useRef<THREE.HemisphereLight>(null);
   const { actions } = useAnimations(animations, dancerRef);
   console.log(actions);
 
@@ -148,7 +149,7 @@ export const Dancer = () => {
       .from(
         dancerRef.current.rotation,
         {
-          duration: 2,
+          duration: 4,
           y: Math.PI,
         },
         0.5
@@ -156,7 +157,7 @@ export const Dancer = () => {
       .from(
         dancerRef.current.position,
         {
-          duration: 2,
+          duration: 4,
           x: 3,
         },
         "<"
@@ -164,7 +165,7 @@ export const Dancer = () => {
       .to(
         three.camera.position,
         {
-          duration: 5,
+          duration: 10,
           x: 2,
           z: 8,
         },
@@ -173,25 +174,47 @@ export const Dancer = () => {
       .to(
         params,
         {
-          duration: 5,
+          duration: 10,
           sceneColor: "#0C0400",
-          onUpdate: () => {
-            setRotateFinished(false);
-          },
         },
 
         "<"
       )
+      .to(pivot.rotation, {
+        duration: 10,
+        y: Math.PI,
+      })
+      .to(
+        three.camera.position,
+        {
+          duration: 10,
+          x: -4,
+          z: 12,
+        },
+        "<"
+      )
       .to(three.camera.position, {
-        duration: 5,
+        duration: 10,
+        x: 0,
+        z: 6,
+      })
+      .to(three.camera.position, {
+        duration: 10,
         x: 0,
         z: 16,
+        onUpdate: () => {
+          setRotateFinished(false);
+        },
+      })
+      .to(hemisphereLightRef.current, {
+        duration: 5,
+        intensity: 30,
       })
       .to(
         pivot.rotation,
         {
-          duration: 5,
-          y: Math.PI * 2,
+          duration: 15,
+          y: Math.PI * 4,
           onUpdate: () => {
             setRotateFinished(true);
           },
@@ -231,8 +254,6 @@ export const Dancer = () => {
         <rectAreaLight
           ref={rectAreaLightRef}
           position={[0, 10, 0]}
-          castShadow
-          receiveShadow
           intensity={30}
         />
 
@@ -241,6 +262,14 @@ export const Dancer = () => {
           intensity={30}
           castShadow
           receiveShadow
+        />
+
+        <hemisphereLight
+          ref={hemisphereLightRef}
+          position={[0, 5, 0]}
+          intensity={0}
+          groundColor={"lime"}
+          color={"blue"}
         />
 
         <Box ref={boxRef} position={[0, 0, 0]} args={[50, 50, 50]}>
