@@ -10,6 +10,17 @@ export const FixedDOM = () => {
         Threejs Interesting Threejs Interesting Threejs Interesting Threejs
         Interesting Threejs Interesting Threejs Interesting Threejs Interesting
         Threejs Interesting Threejs Interesting Threejs Interesting Threejs
+        Interesting Threejs Interesting Threejs Interesting ThreejsInteresting
+        Threejs Interesting Threejs Interesting ThreejsInteresting Threejs
+        Interesting Threejs Interesting ThreejsInteresting Threejs Interesting
+        Threejs Interesting ThreejsInteresting Threejs Interesting Threejs
+        Interesting ThreejsInteresting Threejs Interesting Threejs Interesting
+        ThreejsInteresting Threejs Interesting Threejs Interesting
+        ThreejsInteresting Threejs Interesting Threejs Interesting
+        ThreejsInteresting Threejs Interesting Threejs Interesting
+        ThreejsInteresting Threejs Interesting Threejs Interesting
+        ThreejsInteresting Threejs Interesting Threejs Interesting
+        ThreejsInteresting Threejs Interesting Threejs Interesting Threejs
         Interesting Threejs Interesting Threejs Interesting Threejs
       </span>
       <img src="/threejs.png" alt="threejs-logo"></img>{" "}
@@ -21,7 +32,17 @@ export const FixedDOM = () => {
         Interesting Threejs Interesting Threejs Interesting Threejs Interesting
         Threejs Interesting Threejs Interesting Threejs Interesting Threejs
         Interesting Threejs Interesting Threejs Interesting Threejs Interesting
-        Threejs Interesting Threejs Interesting Threejs
+        Threejs Interesting Threejs Interesting Threejs Threejs Interesting
+        Threejs Interesting Threejs Interesting Threejs Interesting Threejs
+        Interesting Threejs Interesting Threejs Interesting Threejs Interesting
+        Threejs Interesting Threejs Threejs Interesting Threejs Interesting
+        Threejs Threejs Interesting Threejs Interesting Threejs Interesting
+        Threejs Interesting Threejs Interesting Threejs Interesting Threejs
+        Interesting Threejs Interesting Threejs Interesting Threejs Threejs
+        Interesting Threejs Interesting Threejs Threejs Interesting Threejs
+        Interesting Threejs Interesting Threejs Interesting Threejs Interesting
+        Threejs Interesting Threejs Interesting Threejs Interesting Threejs
+        Interesting Threejs
       </span>
     </FixedDOMWrapper>
   );
@@ -34,6 +55,7 @@ const FixedDOMWrapper = styled.div`
   width: 400px;
   height: 400px;
   position: fixed;
+  font-size: 8px;
   top: 50%;
   right: 0;
   transform: translate(-50%, -50%);

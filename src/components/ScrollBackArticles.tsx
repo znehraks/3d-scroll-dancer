@@ -84,6 +84,13 @@ export const SrcollBackArticles = () => {
       <ArticleWrapper ref={article07Ref}>크크 크크7</ArticleWrapper> */}
       <ArticleWrapper ref={article08Ref}>
         You've mastered the basics of R3F.
+        <Footer>
+          {" "}
+          You've mastered the basics of R3F.You've mastered the basics of
+          R3F.You've mastered the basics of R3F.You've mastered the basics of
+          R3F.You've mastered the basics of R3F.You've mastered the basics of
+          R3F.
+        </Footer>
       </ArticleWrapper>
     </Scroll>
   );
@@ -160,4 +167,10 @@ const RightBox = styled.div`
     font-size: 32px;
     font-weight: 800;
   }
+`;
+
+const Footer = styled.div`
+  position: absolute;
+  bottom: 10px;
+  font-size: 8px;
 `;

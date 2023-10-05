@@ -243,7 +243,6 @@ export const Dancer = () => {
 
     for (let i = 0; i < count * 3; i++) {
       positions[i] = (Math.random() - 0.5) * 25;
-      // colors[i] = Math.random();
     }
     return { positions };
   }, []);
@@ -251,20 +250,19 @@ export const Dancer = () => {
   if (isEntered)
     return (
       <>
+        <primitive ref={dancerRef} object={scene} scale={0.05} />
         <ambientLight intensity={2} />
         <rectAreaLight
           ref={rectAreaLightRef}
           position={[0, 10, 0]}
           intensity={30}
         />
-
         <pointLight
           position={[0, 5, 0]}
           intensity={30}
           castShadow
           receiveShadow
         />
-
         <hemisphereLight
           ref={hemisphereLightRef}
           position={[0, 5, 0]}
@@ -275,37 +273,37 @@ export const Dancer = () => {
 
         <Box ref={boxRef} position={[0, 0, 0]} args={[50, 50, 50]}>
           <meshStandardMaterial color={"#DC4F00"} side={THREE.DoubleSide} />
-          <Circle
-            castShadow
-            receiveShadow
-            args={[8, 32, 32]}
-            rotation-x={-Math.PI / 2}
-            position-y={-4.4}
-          >
-            <meshStandardMaterial color={"#DC4F00"} side={THREE.DoubleSide} />
-          </Circle>
-          {/* 셰이더 조작해서 반짝이도록 하는 효과 추가 */}
-          <Points positions={positions}>
-            <pointsMaterial
-              size={0.5}
-              color={new THREE.Color("#DC4F00")}
-              sizeAttenuation
-              depthWrite
-              depthTest={false}
-              alphaMap={texture}
-              transparent
-              alphaTest={0.001}
-            />
-          </Points>
-          <PositionalAudio
-            position={[-24, 0, 0]}
-            autoplay
-            url="/audio/bgm.mp3"
-            distance={50}
-            loop
-          />
-          <primitive ref={dancerRef} object={scene} scale={0.05} />
         </Box>
+
+        <Circle
+          castShadow
+          receiveShadow
+          args={[8, 32, 32]}
+          rotation-x={-Math.PI / 2}
+          position-y={-4.4}
+        >
+          <meshStandardMaterial color={"#DC4F00"} side={THREE.DoubleSide} />
+        </Circle>
+        {/* 셰이더 조작해서 반짝이도록 하는 효과 추가 */}
+        <Points positions={positions}>
+          <pointsMaterial
+            size={0.5}
+            color={new THREE.Color("#DC4F00")}
+            sizeAttenuation
+            depthWrite
+            depthTest={false}
+            alphaMap={texture}
+            transparent
+            alphaTest={0.001}
+          />
+        </Points>
+        <PositionalAudio
+          position={[-24, 0, 0]}
+          autoplay
+          url="/audio/bgm.mp3"
+          distance={50}
+          loop
+        />
       </>
     );
   return <Loader />;

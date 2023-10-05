@@ -11,14 +11,14 @@ export const Loader = () => {
     <Html center>
       <BlurredBackground />
       <Container>
-        <ProgressBar>{progress.progress * 10}%</ProgressBar>
+        <ProgressBar>{progress.progress}%</ProgressBar>
         {progress.progress === 100 && (
           <EnterBtn
             onClick={() => {
               setIsEntered(true);
             }}
           >
-            입장
+            Enter
           </EnterBtn>
         )}
       </Container>
