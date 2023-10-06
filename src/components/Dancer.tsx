@@ -16,18 +16,10 @@ import { IsEnteredAtom } from "../stores";
 import { Loader } from "./Loader";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-// breakdance01
-// breakdanceFootworkToIdle
-// breakdancingEnd
-// hiphop01
-// hiphop02
-// twerk
-// uprock
-// wave
-// windmill
 let timeline: GSAPTimeline;
-const params = {
-  sceneColor: "#DC4F00",
+
+const colors = {
+  boxMaterialColor: "#DC4F00",
   // currentAnimation: "wave",
 };
 gsap.registerPlugin(ScrollTrigger);
@@ -41,18 +33,30 @@ export const Dancer = () => {
   const texture = useTexture("/textures/5.png");
   const dancerRef = useRef<THREE.Mesh>(null);
   const boxRef = useRef<THREE.Mesh>(null);
+  const starGroupRef01 = useRef<THREE.PointsMaterial>(null);
+  const starGroupRef02 = useRef<THREE.PointsMaterial>(null);
+  const starGroupRef03 = useRef<THREE.PointsMaterial>(null);
   const rectAreaLightRef = useRef<THREE.RectAreaLight>(null);
   const hemisphereLightRef = useRef<THREE.HemisphereLight>(null);
   const { actions } = useAnimations(animations, dancerRef);
   console.log(actions);
 
+  const { positions } = useMemo(() => {
+    const count = 500;
+    const positions = new Float32Array(count * 3);
+
+    for (let i = 0; i < count * 3; i++) {
+      positions[i] = (Math.random() - 0.5) * 25;
+    }
+    return { positions };
+  }, []);
+
   useFrame(() => {
     if (!isEntered) return;
     if (!boxRef.current) return;
     timeline.seek(scroll.offset * timeline.duration());
-    three.scene.background = new THREE.Color(params.sceneColor);
     (boxRef.current.material as THREE.MeshStandardMaterial).color =
-      new THREE.Color(params.sceneColor);
+      new THREE.Color(colors.boxMaterialColor);
 
     // if (scroll.offset * timeline.duration() >= 10) {
     if (rotateFinished) {
@@ -90,7 +94,7 @@ export const Dancer = () => {
     if (!isEntered) return;
     three.camera.lookAt(1, 2, 0);
     actions["wave"]?.play();
-    three.scene.background = new THREE.Color(params.sceneColor);
+    three.scene.background = new THREE.Color(colors.boxMaterialColor);
     scene.traverse((obj) => {
       if ((obj as THREE.Mesh).isMesh) {
         obj.castShadow = true;
@@ -129,13 +133,41 @@ export const Dancer = () => {
 
     // scene에 그대로 색 변경할 경우
     gsap.fromTo(
-      params,
-      { sceneColor: "#0C0400" },
+      colors,
+      { boxMaterialColor: "#0C0400" },
       {
         duration: 2.5,
-        sceneColor: "#DC4F00",
+        boxMaterialColor: "#DC4F00",
       }
     );
+
+    gsap.to(starGroupRef01.current, {
+      yoyo: true,
+      duration: 2,
+      repeat: -1,
+      ease: "linear",
+      size: 0.05,
+    });
+
+    gsap.to(starGroupRef02.current, {
+      yoyo: true,
+      duration: 3,
+      repeat: -1,
+      // ease: "power1.inOut",
+
+      ease: "linear",
+      size: 0.05,
+    });
+
+    gsap.to(starGroupRef03.current, {
+      yoyo: true,
+      duration: 4,
+      repeat: -1,
+      // ease: "elastic.in",
+
+      ease: "linear",
+      size: 0.05,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEntered]);
 
@@ -173,10 +205,10 @@ export const Dancer = () => {
         "<"
       )
       .to(
-        params,
+        colors,
         {
           duration: 10,
-          sceneColor: "#0C0400",
+          boxMaterialColor: "#0C0400",
         },
 
         "<"
@@ -223,10 +255,10 @@ export const Dancer = () => {
         "<"
       )
       .to(
-        params,
+        colors,
         {
           duration: 15,
-          sceneColor: "#DC4F00",
+          boxMaterialColor: "#DC4F00",
         },
         "<"
       );
@@ -236,16 +268,6 @@ export const Dancer = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEntered]);
-
-  const { positions } = useMemo(() => {
-    const count = 500;
-    const positions = new Float32Array(count * 3);
-
-    for (let i = 0; i < count * 3; i++) {
-      positions[i] = (Math.random() - 0.5) * 25;
-    }
-    return { positions };
-  }, []);
 
   if (isEntered)
     return (
@@ -259,7 +281,7 @@ export const Dancer = () => {
         />
         <pointLight
           position={[0, 5, 0]}
-          intensity={30}
+          intensity={45}
           castShadow
           receiveShadow
         />
@@ -271,7 +293,7 @@ export const Dancer = () => {
           color={"blue"}
         />
 
-        <Box ref={boxRef} position={[0, 0, 0]} args={[50, 50, 50]}>
+        <Box ref={boxRef} position={[0, 0, 0]} args={[100, 100, 100]}>
           <meshStandardMaterial color={"#DC4F00"} side={THREE.DoubleSide} />
         </Box>
 
@@ -285,18 +307,55 @@ export const Dancer = () => {
           <meshStandardMaterial color={"#DC4F00"} side={THREE.DoubleSide} />
         </Circle>
         {/* 셰이더 조작해서 반짝이도록 하는 효과 추가 */}
-        <Points positions={positions}>
+        <Points positions={positions.slice(0, positions.length / 3)}>
           <pointsMaterial
+            ref={starGroupRef01}
             size={0.5}
             color={new THREE.Color("#DC4F00")}
             sizeAttenuation
             depthWrite
-            depthTest={false}
             alphaMap={texture}
             transparent
             alphaTest={0.001}
           />
         </Points>
+        <Points
+          positions={positions.slice(
+            positions.length / 3,
+            (positions.length * 2) / 3
+          )}
+        >
+          <pointsMaterial
+            ref={starGroupRef02}
+            size={0.5}
+            color={new THREE.Color("#DC4F00")}
+            sizeAttenuation
+            depthWrite
+            alphaMap={texture}
+            transparent
+            alphaTest={0.001}
+          />
+        </Points>
+        <Points positions={positions.slice((positions.length * 2) / 3)}>
+          <pointsMaterial
+            ref={starGroupRef03}
+            size={0.5}
+            color={new THREE.Color("#DC4F00")}
+            sizeAttenuation
+            depthWrite
+            alphaMap={texture}
+            transparent
+            alphaTest={0.001}
+          />
+        </Points>
+        {/* <Stars
+          radius={10} // 범위
+          depth={5} // 장면의 깊이로 이해하고, 일단은 숫자를 바꾸었을때 어떻게 변하는지 정도만 알아두면 됨
+          count={500} // 개수
+          speed={2} // 반짝이는 속도
+          saturation={10}
+          fade // 희미한 정도(좀더 주변이 뿌연 구체로 바뀜)
+        /> */}
         <PositionalAudio
           position={[-24, 0, 0]}
           autoplay

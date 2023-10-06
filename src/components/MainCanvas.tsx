@@ -6,7 +6,7 @@ import { ScrollControls } from "@react-three/drei";
 import { useRecoilValue } from "recoil";
 import { IsEnteredAtom } from "../stores";
 import { Dancer } from "./Dancer";
-import { SrcollBackArticles } from "./ScrollBackArticles";
+import { MovingDOM } from "./dom/MovingDOM";
 
 export const MainCanvas = () => {
   const isEntered = useRecoilValue(IsEnteredAtom);
@@ -28,7 +28,7 @@ export const MainCanvas = () => {
     >
       <ScrollControls pages={isEntered ? 8 : 0} damping={0.25}>
         <Suspense fallback={<Loader />}>
-          <SrcollBackArticles />
+          <MovingDOM />
           <Dancer />
         </Suspense>
       </ScrollControls>
