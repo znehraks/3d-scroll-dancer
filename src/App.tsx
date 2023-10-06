@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { MainCanvas } from "./components/MainCanvas";
 import { RecoilRoot } from "recoil";
-import { FixedDOM } from "./components/FixedDOM";
+import { FixedDOM } from "./components/dom/FixedDOM";
 
 function App() {
   // gasp scrollTrigger를 사용하도록 설정

@@ -16,15 +16,6 @@ import { IsEnteredAtom } from "../stores";
 import { Loader } from "./Loader";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-// breakdance01
-// breakdanceFootworkToIdle
-// breakdancingEnd
-// hiphop01
-// hiphop02
-// twerk
-// uprock
-// wave
-// windmill
 let timeline: GSAPTimeline;
 
 const colors = {
@@ -290,7 +281,7 @@ export const Dancer = () => {
         />
         <pointLight
           position={[0, 5, 0]}
-          intensity={30}
+          intensity={45}
           castShadow
           receiveShadow
         />

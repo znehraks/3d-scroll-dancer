@@ -3,9 +3,9 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { IsEnteredAtom } from "../stores";
+import { IsEnteredAtom } from "../../stores";
 
-export const SrcollBackArticles = () => {
+export const MovingDOM = () => {
   const isEntered = useRecoilValue(IsEnteredAtom);
   const fixed = document.getElementById("fixed");
   const scroll = useScroll();
