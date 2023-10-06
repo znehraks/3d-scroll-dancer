@@ -314,7 +314,6 @@ export const Dancer = () => {
             color={new THREE.Color("#DC4F00")}
             sizeAttenuation
             depthWrite
-            depthTest={false}
             alphaMap={texture}
             transparent
             alphaTest={0.001}
@@ -332,7 +331,6 @@ export const Dancer = () => {
             color={new THREE.Color("#DC4F00")}
             sizeAttenuation
             depthWrite
-            depthTest={false}
             alphaMap={texture}
             transparent
             alphaTest={0.001}
@@ -345,7 +343,6 @@ export const Dancer = () => {
             color={new THREE.Color("#DC4F00")}
             sizeAttenuation
             depthWrite
-            depthTest={false}
             alphaMap={texture}
             transparent
             alphaTest={0.001}
