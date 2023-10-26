@@ -1,17 +1,21 @@
 import { Html, useProgress } from "@react-three/drei";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled, { keyframes } from "styled-components";
 import { IsEnteredAtom } from "../stores";
 
-export const Loader = () => {
-  const setIsEntered = useSetRecoilState(IsEnteredAtom);
+interface IProps {
+  isCompleted?: boolean;
+}
+export const Loader = ({ isCompleted }: IProps) => {
+  const [isEntered, setIsEntered] = useRecoilState(IsEnteredAtom);
   const progress = useProgress();
   console.log("progress", progress);
+  if (isEntered) return null;
   return (
     <Html center>
       <BlurredBackground />
       <Container>
-        <ProgressBar>{progress.progress}%</ProgressBar>
+        <ProgressBar>{isCompleted ? 100 : progress.progress}%</ProgressBar>
         {progress.progress === 100 && (
           <EnterBtn
             onClick={() => {

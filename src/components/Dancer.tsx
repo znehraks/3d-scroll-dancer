@@ -39,7 +39,6 @@ export const Dancer = () => {
   const rectAreaLightRef = useRef<THREE.RectAreaLight>(null);
   const hemisphereLightRef = useRef<THREE.HemisphereLight>(null);
   const { actions } = useAnimations(animations, dancerRef);
-  console.log(actions);
 
   const { positions } = useMemo(() => {
     const count = 500;
@@ -365,7 +364,7 @@ export const Dancer = () => {
         />
       </>
     );
-  return <Loader />;
+  return <Loader isCompleted />;
 };
 
-useGLTF.preload("/models/dancer.glb");
+// useGLTF.preload("/models/dancer.glb");
