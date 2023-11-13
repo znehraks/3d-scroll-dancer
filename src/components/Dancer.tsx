@@ -15,14 +15,14 @@ import * as THREE from "three";
 import { IsEnteredAtom } from "../stores";
 import { Loader } from "./Loader";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+// import { ScrollTrigger } from "gsap/ScrollTrigger";
 let timeline: GSAPTimeline;
 
 const colors = {
   boxMaterialColor: "#DC4F00",
   // currentAnimation: "wave",
 };
-gsap.registerPlugin(ScrollTrigger);
+// gsap.registerPlugin(ScrollTrigger);
 export const Dancer = () => {
   const isEntered = useRecoilValue(IsEnteredAtom);
   const three = useThree();
@@ -65,6 +65,21 @@ export const Dancer = () => {
     }
   });
 
+  // 초기화
+  useEffect(() => {
+    if (!isEntered) return;
+    three.camera.lookAt(1, 2, 0);
+    actions["wave"]?.play();
+    three.scene.background = new THREE.Color(colors.boxMaterialColor);
+    scene.traverse((obj) => {
+      if ((obj as THREE.Mesh).isMesh) {
+        obj.castShadow = true;
+        obj.receiveShadow = true;
+      }
+    });
+  }, [actions, isEntered, scene, three.camera, three.scene]);
+
+  // 애니메이션 컨트롤
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let timeout: any;
@@ -89,19 +104,7 @@ export const Dancer = () => {
     };
   }, [actions, currentAnimation, scroll.offset]);
 
-  useEffect(() => {
-    if (!isEntered) return;
-    three.camera.lookAt(1, 2, 0);
-    actions["wave"]?.play();
-    three.scene.background = new THREE.Color(colors.boxMaterialColor);
-    scene.traverse((obj) => {
-      if ((obj as THREE.Mesh).isMesh) {
-        obj.castShadow = true;
-        obj.receiveShadow = true;
-      }
-    });
-  }, [actions, isEntered, scene, three.camera, three.scene]);
-
+  // gsap 초기 카메라 회전 및 배경 별 반짝임 애니메이션
   useEffect(() => {
     if (!isEntered) return;
     if (!dancerRef.current) return;
@@ -170,6 +173,7 @@ export const Dancer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEntered]);
 
+  // 스크롤 시, 일어날 애니메이션 컨트롤
   useEffect(() => {
     if (!dancerRef.current) return;
     const pivot = new THREE.Group();
@@ -265,8 +269,7 @@ export const Dancer = () => {
     return () => {
       three.scene.remove(pivot);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEntered]);
+  }, [isEntered, three.camera, three.scene]);
 
   if (isEntered)
     return (
@@ -347,14 +350,6 @@ export const Dancer = () => {
             alphaTest={0.001}
           />
         </Points>
-        {/* <Stars
-          radius={10} // 범위
-          depth={5} // 장면의 깊이로 이해하고, 일단은 숫자를 바꾸었을때 어떻게 변하는지 정도만 알아두면 됨
-          count={500} // 개수
-          speed={2} // 반짝이는 속도
-          saturation={10}
-          fade // 희미한 정도(좀더 주변이 뿌연 구체로 바뀜)
-        /> */}
         <PositionalAudio
           position={[-24, 0, 0]}
           autoplay
