@@ -7,19 +7,18 @@ import {
   useGLTF,
   useScroll,
   useTexture,
-} from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useRecoilValue } from "recoil";
-import * as THREE from "three";
-import { IsEnteredAtom } from "../stores";
-import { Loader } from "./Loader";
-import gsap from "gsap";
+} from '@react-three/drei';
+import { useFrame, useThree } from '@react-three/fiber';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import * as THREE from 'three';
+import { IsEnteredAtom } from '../stores';
+import gsap from 'gsap';
 // import { ScrollTrigger } from "gsap/ScrollTrigger";
 let timeline: GSAPTimeline;
 
 const colors = {
-  boxMaterialColor: "#DC4F00",
+  boxMaterialColor: '#DC4F00',
   // currentAnimation: "wave",
 };
 // gsap.registerPlugin(ScrollTrigger);
@@ -27,10 +26,10 @@ export const Dancer = () => {
   const isEntered = useRecoilValue(IsEnteredAtom);
   const three = useThree();
   const scroll = useScroll();
-  const [currentAnimation, setCurrentAnimation] = useState("wave");
+  const [currentAnimation, setCurrentAnimation] = useState('wave');
   const [rotateFinished, setRotateFinished] = useState(false);
-  const { scene, animations } = useGLTF("/models/dancer.glb");
-  const texture = useTexture("/textures/5.png");
+  const { scene, animations } = useGLTF('/models/dancer.glb');
+  const texture = useTexture('/textures/5.png');
   const dancerRef = useRef<THREE.Mesh>(null);
   const boxRef = useRef<THREE.Mesh>(null);
   const starGroupRef01 = useRef<THREE.PointsMaterial>(null);
@@ -59,9 +58,9 @@ export const Dancer = () => {
 
     // if (scroll.offset * timeline.duration() >= 10) {
     if (rotateFinished) {
-      setCurrentAnimation("breakdancingEnd");
+      setCurrentAnimation('breakdancingEnd');
     } else {
-      setCurrentAnimation("wave");
+      setCurrentAnimation('wave');
     }
   });
 
@@ -69,7 +68,7 @@ export const Dancer = () => {
   useEffect(() => {
     if (!isEntered) return;
     three.camera.lookAt(1, 2, 0);
-    actions["wave"]?.play();
+    actions['wave']?.play();
     three.scene.background = new THREE.Color(colors.boxMaterialColor);
     scene.traverse((obj) => {
       if ((obj as THREE.Mesh).isMesh) {
@@ -83,7 +82,7 @@ export const Dancer = () => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let timeout: any;
-    if (currentAnimation === "wave") {
+    if (currentAnimation === 'wave') {
       actions[currentAnimation]?.reset().fadeIn(0.5).play();
     } else {
       actions[currentAnimation]
@@ -120,7 +119,7 @@ export const Dancer = () => {
         x: 0,
         y: 6,
         z: 12,
-      }
+      },
     );
     gsap.fromTo(
       three.camera.rotation,
@@ -130,24 +129,24 @@ export const Dancer = () => {
       {
         duration: 2.5,
         z: 0,
-      }
+      },
     );
 
     // scene에 그대로 색 변경할 경우
     gsap.fromTo(
       colors,
-      { boxMaterialColor: "#0C0400" },
+      { boxMaterialColor: '#0C0400' },
       {
         duration: 2.5,
-        boxMaterialColor: "#DC4F00",
-      }
+        boxMaterialColor: '#DC4F00',
+      },
     );
 
     gsap.to(starGroupRef01.current, {
       yoyo: true,
       duration: 2,
       repeat: -1,
-      ease: "linear",
+      ease: 'linear',
       size: 0.05,
     });
 
@@ -157,7 +156,7 @@ export const Dancer = () => {
       repeat: -1,
       // ease: "power1.inOut",
 
-      ease: "linear",
+      ease: 'linear',
       size: 0.05,
     });
 
@@ -167,7 +166,7 @@ export const Dancer = () => {
       repeat: -1,
       // ease: "elastic.in",
 
-      ease: "linear",
+      ease: 'linear',
       size: 0.05,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -188,7 +187,7 @@ export const Dancer = () => {
           duration: 4,
           y: Math.PI,
         },
-        0.5
+        0.5,
       )
       .from(
         dancerRef.current.position,
@@ -196,7 +195,7 @@ export const Dancer = () => {
           duration: 4,
           x: 3,
         },
-        "<"
+        '<',
       )
       .to(
         three.camera.position,
@@ -205,16 +204,16 @@ export const Dancer = () => {
           x: 2,
           z: 8,
         },
-        "<"
+        '<',
       )
       .to(
         colors,
         {
           duration: 10,
-          boxMaterialColor: "#0C0400",
+          boxMaterialColor: '#0C0400',
         },
 
-        "<"
+        '<',
       )
       .to(pivot.rotation, {
         duration: 10,
@@ -227,7 +226,7 @@ export const Dancer = () => {
           x: -4,
           z: 12,
         },
-        "<"
+        '<',
       )
       .to(three.camera.position, {
         duration: 10,
@@ -255,15 +254,15 @@ export const Dancer = () => {
             setRotateFinished(true);
           },
         },
-        "<"
+        '<',
       )
       .to(
         colors,
         {
           duration: 15,
-          boxMaterialColor: "#DC4F00",
+          boxMaterialColor: '#DC4F00',
         },
-        "<"
+        '<',
       );
 
     return () => {
@@ -271,95 +270,93 @@ export const Dancer = () => {
     };
   }, [isEntered, three.camera, three.scene]);
 
-  if (isEntered)
-    return (
-      <>
-        <primitive ref={dancerRef} object={scene} scale={0.05} />
-        <ambientLight intensity={2} />
-        <rectAreaLight
-          ref={rectAreaLightRef}
-          position={[0, 10, 0]}
-          intensity={30}
-        />
-        <pointLight
-          position={[0, 5, 0]}
-          intensity={45}
-          castShadow
-          receiveShadow
-        />
-        <hemisphereLight
-          ref={hemisphereLightRef}
-          position={[0, 5, 0]}
-          intensity={0}
-          groundColor={"lime"}
-          color={"blue"}
-        />
+  return (
+    <>
+      <primitive ref={dancerRef} object={scene} scale={0.05} />
+      <ambientLight intensity={2} />
+      <rectAreaLight
+        ref={rectAreaLightRef}
+        position={[0, 10, 0]}
+        intensity={30}
+      />
+      <pointLight
+        position={[0, 5, 0]}
+        intensity={45}
+        castShadow
+        receiveShadow
+      />
+      <hemisphereLight
+        ref={hemisphereLightRef}
+        position={[0, 5, 0]}
+        intensity={0}
+        groundColor={'lime'}
+        color={'blue'}
+      />
 
-        <Box ref={boxRef} position={[0, 0, 0]} args={[100, 100, 100]}>
-          <meshStandardMaterial color={"#DC4F00"} side={THREE.DoubleSide} />
-        </Box>
+      <Box ref={boxRef} position={[0, 0, 0]} args={[100, 100, 100]}>
+        <meshStandardMaterial color={'#DC4F00'} side={THREE.DoubleSide} />
+      </Box>
 
-        <Circle
-          castShadow
-          receiveShadow
-          args={[8, 32, 32]}
-          rotation-x={-Math.PI / 2}
-          position-y={-4.4}
-        >
-          <meshStandardMaterial color={"#DC4F00"} side={THREE.DoubleSide} />
-        </Circle>
-        {/* 셰이더 조작해서 반짝이도록 하는 효과 추가 */}
-        <Points positions={positions.slice(0, positions.length / 3)}>
-          <pointsMaterial
-            ref={starGroupRef01}
-            size={0.5}
-            color={new THREE.Color("#DC4F00")}
-            sizeAttenuation
-            depthWrite
-            alphaMap={texture}
-            transparent
-            alphaTest={0.001}
-          />
-        </Points>
-        <Points
-          positions={positions.slice(
-            positions.length / 3,
-            (positions.length * 2) / 3
-          )}
-        >
-          <pointsMaterial
-            ref={starGroupRef02}
-            size={0.5}
-            color={new THREE.Color("#DC4F00")}
-            sizeAttenuation
-            depthWrite
-            alphaMap={texture}
-            transparent
-            alphaTest={0.001}
-          />
-        </Points>
-        <Points positions={positions.slice((positions.length * 2) / 3)}>
-          <pointsMaterial
-            ref={starGroupRef03}
-            size={0.5}
-            color={new THREE.Color("#DC4F00")}
-            sizeAttenuation
-            depthWrite
-            alphaMap={texture}
-            transparent
-            alphaTest={0.001}
-          />
-        </Points>
-        <PositionalAudio
-          position={[-24, 0, 0]}
-          autoplay
-          url="/audio/bgm.mp3"
-          distance={50}
-          loop
+      <Circle
+        castShadow
+        receiveShadow
+        args={[8, 32, 32]}
+        rotation-x={-Math.PI / 2}
+        position-y={-4.4}
+      >
+        <meshStandardMaterial color={'#DC4F00'} side={THREE.DoubleSide} />
+      </Circle>
+      {/* 셰이더 조작해서 반짝이도록 하는 효과 추가 */}
+      <Points positions={positions.slice(0, positions.length / 3)}>
+        <pointsMaterial
+          ref={starGroupRef01}
+          size={0.5}
+          color={new THREE.Color('#DC4F00')}
+          sizeAttenuation
+          depthWrite
+          alphaMap={texture}
+          transparent
+          alphaTest={0.001}
         />
-      </>
-    );
-  return <Loader isCompleted />;
+      </Points>
+      <Points
+        positions={positions.slice(
+          positions.length / 3,
+          (positions.length * 2) / 3,
+        )}
+      >
+        <pointsMaterial
+          ref={starGroupRef02}
+          size={0.5}
+          color={new THREE.Color('#DC4F00')}
+          sizeAttenuation
+          depthWrite
+          alphaMap={texture}
+          transparent
+          alphaTest={0.001}
+        />
+      </Points>
+      <Points positions={positions.slice((positions.length * 2) / 3)}>
+        <pointsMaterial
+          ref={starGroupRef03}
+          size={0.5}
+          color={new THREE.Color('#DC4F00')}
+          sizeAttenuation
+          depthWrite
+          alphaMap={texture}
+          transparent
+          alphaTest={0.001}
+        />
+      </Points>
+      <PositionalAudio
+        position={[-24, 0, 0]}
+        autoplay
+        url="/audio/bgm.mp3"
+        distance={50}
+        loop
+      />
+    </>
+  );
 };
 
 // useGLTF.preload("/models/dancer.glb");

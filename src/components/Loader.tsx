@@ -1,22 +1,43 @@
-import { Html, useProgress } from "@react-three/drei";
-import { useRecoilState } from "recoil";
-import styled, { keyframes } from "styled-components";
-import { IsEnteredAtom } from "../stores";
+import { Html, useProgress } from '@react-three/drei';
+import { useRecoilState } from 'recoil';
+import styled, { keyframes } from 'styled-components';
+import { IsEnteredAtom } from '../stores';
+import { useEffect, useState } from 'react';
 
 interface IProps {
-  isCompleted?: boolean;
+  isCompleted: boolean;
 }
+
 export const Loader = ({ isCompleted }: IProps) => {
   const [isEntered, setIsEntered] = useRecoilState(IsEnteredAtom);
-  const progress = useProgress();
-  console.log("progress", progress);
+  const { progress } = useProgress();
+  const [displayProgress, setDisplayProgress] = useState(0);
+
+  useEffect(() => {
+    if (isCompleted) {
+      const interval = setInterval(() => {
+        setDisplayProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          return prev + 1;
+        });
+      }, 10);
+      return () => clearInterval(interval);
+    } else {
+      setDisplayProgress(progress);
+    }
+  }, [isCompleted, progress]);
+
   if (isEntered) return null;
+
   return (
     <Html center>
       <BlurredBackground />
       <Container>
-        <ProgressBar>{isCompleted ? 100 : progress.progress}%</ProgressBar>
-        {progress.progress === 100 && (
+        <ProgressBar>{displayProgress.toFixed(0)}%</ProgressBar>
+        {displayProgress === 100 && (
           <EnterBtn
             onClick={() => {
               setIsEntered(true);
@@ -29,6 +50,7 @@ export const Loader = ({ isCompleted }: IProps) => {
     </Html>
   );
 };
+
 const blink = keyframes`
   0% {
     opacity: 1;
