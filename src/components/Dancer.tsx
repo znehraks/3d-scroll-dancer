@@ -359,4 +359,4 @@ export const Dancer = () => {
   );
 };
 
-// useGLTF.preload("/models/dancer.glb");
+// useGLTF.preload('/models/dancer.glb');
